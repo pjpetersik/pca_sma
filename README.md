@@ -1,4 +1,4 @@
-# pca_ewh
+# PCA of surface mass anomalies
 Principal component analysis of surface mass anomalies expressed in equivalent water height (EWH) observed by the GRACE satellites that I had to do for a assignment during my studies. 
 
 ## Data
