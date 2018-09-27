@@ -25,7 +25,10 @@ def scale(x):
     return (x-x.mean())/x.std()
 
 def scaleMax(x):
-    return x/max(abs(x))
+    return x/np.max(np.abs(x))
+
+def normalize(x):
+    return x/np.sqrt(np.sum(x**2))
 
 #%%  
     
@@ -104,14 +107,14 @@ for i in range(0,2):
     
     norm = cm.colors.Normalize(vmax=-1, vmin=1.)
     cmap = cm.bwr
-    cs = m.pcolormesh(x,y,pca.components_[i,:].reshape(len_lon,len_lat),cmap = cmap,norm=norm)
+    cs = m.pcolormesh(x,y,scaleMax(pca.components_[i,:].reshape(len_lon,len_lat)),cmap = cmap,norm=norm)
     
     cb = m.colorbar(cs)
-
+#%%
     
 for i in range(0,2):
     fig.add_subplot(223+i)
-    projection = np.matmul(EWH_EOFarr,pca.components_[i,:])
+    projection = np.matmul(EWH_EOFarr,normalize(pca.components_[i,:].T))
 
     
     plt.plot(time,projection)
@@ -119,7 +122,7 @@ for i in range(0,2):
 
 #%%
 plt.figure()
-plt.plot(np.cumsum(pca.explained_variance_ratio_))
+plt.bar(range(0,len(pca.components_)),np.cumsum(pca.explained_variance_ratio_))
 plt.xlabel("EOF")
 plt.ylabel("cumulative explained variance")
 
